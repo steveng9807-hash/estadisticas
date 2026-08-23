@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Panel de Control - Tienda & Farmacia</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Segoe UI,Arial,sans-serif;
+
+    background:
+    radial-gradient(circle at 20% 20%,#071c36 0%,transparent 35%),
+    radial-gradient(circle at 80% 20%,#10240e 0%,transparent 30%),
+    #030712;
+
+    color:#f8fafc;
+
+    min-height:100vh;
+
+}
+
+
+/* =========================
+   BARRA LATERAL
+========================= */
+
+.sidebar{
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    width:250px;
+
+    height:100vh;
+
+    background:rgba(2,6,23,.95);
+
+    border-right:1px solid #172033;
+
+    padding:25px 18px;
+
+}
+
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:45px;
+
+}
+
+
+.logo-icon{
+
+    font-size:35px;
+
+}
+
+
+.logo h2{
+
+    font-size:18px;
+
+}
+
+
+.logo span{
+
+    color:#00c8ff;
+
+    font-size:13px;
+
+}
+
+
+.menu{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+
+.menu a{
+
+    color:#cbd5e1;
+
+    text-decoration:none;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    transition:.25s;
+
+    font-size:15px;
+
+}
+
+
+.menu a:hover{
+
+    background:#082b50;
+
+    color:#fff;
+
+}
+
+
+.menu a.active{
+
+    background:linear-gradient(
+        90deg,
+        #0759a8,
+        #087bd0
+    );
+
+    color:white;
+
+    box-shadow:
+    0 0 20px rgba(0,150,255,.25);
+
+}
+
+
+.update{
+
+    position:absolute;
+
+    bottom:25px;
+
+    left:18px;
+
+    right:18px;
+
+    background:#07111f;
+
+    border:1px solid #172033;
+
+    border-radius:15px;
+
+    padding:18px;
+
+}
+
+
+.update small{
+
+    color:#94a3b8;
+
+}
+
+
+.update strong{
+
+    display:block;
+
+    color:#22c55e;
+
+    margin-top:8px;
+
+}
+
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.main{
+
+    margin-left:250px;
+
+    padding:30px 40px;
+
+}
+
+
+.top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+
+.status{
+
+    background:#07141d;
+
+    border:1px solid #163323;
+
+    padding:10px 15px;
+
+    border-radius:20px;
+
+    color:#a7f3d0;
+
+    font-size:13px;
+
+}
+
+
+.status-dot{
+
+    display:inline-block;
+
+    width:8px;
+
+    height:8px;
+
+    background:#22c55e;
+
+    border-radius:50%;
+
+    margin-right:8px;
+
+    box-shadow:0 0 10px #22c55e;
+
+}
+
+
+.welcome small{
+
+    color:#94a3b8;
+
+}
+
+
+.welcome h1{
+
+    font-size:36px;
+
+    margin:8px 0;
+
+}
+
+
+.welcome p{
+
+    color:#94a3b8;
+
+}
+
+
+/* =========================
+   TARJETAS PRINCIPALES
+========================= */
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:20px;
+
+}
+
+
+.business-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:30px;
+
+    border-radius:18px;
+
+    border:1px solid;
+
+    min-height:220px;
+
+}
+
+
+.business-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:200px;
+
+    height:200px;
+
+    border-radius:50%;
+
+    filter:blur(60px);
+
+    opacity:.2;
+
+    right:-60px;
+
+    bottom:-80px;
+
+}
+
+
+.tienda{
+
+    background:
+    linear-gradient(
+        135deg,
+        #03172d,
+        #041a31
+    );
+
+    border-color:#075ea8;
+
+}
+
+
+.tienda::after{
+
+    background:#009dff;
+
+}
+
+
+.farmacia{
+
+    background:
+    linear-gradient(
+        135deg,
+        #031d12,
+        #041e15
+    );
+
+    border-color:#087a3e;
+
+}
+
+
+.farmacia::after{
+
+    background:#00ff66;
+
+}
+
+
+.card-content{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+.card-icon{
+
+    font-size:48px;
+
+    margin-bottom:15px;
+
+}
+
+
+.card-label{
+
+    font-size:12px;
+
+    color:#94a3b8;
+
+    letter-spacing:2px;
+
+}
+
+
+.card-title{
+
+    font-size:30px;
+
+    margin:6px 0 8px;
+
+}
+
+
+.tienda .card-title{
+
+    color:#00b7ff;
+
+}
+
+
+.farmacia .card-title{
+
+    color:#22ff65;
+
+}
+
+
+.card-description{
+
+    color:#cbd5e1;
+
+    max-width:420px;
+
+    line-height:1.5;
+
+}
+
+
+.button{
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    padding:12px 22px;
+
+    border-radius:9px;
+
+    text-decoration:none;
+
+    color:white;
+
+    font-weight:600;
+
+}
+
+
+.button-blue{
+
+    background:#087bd0;
+
+}
+
+
+.button-green{
+
+    background:#0a9d45;
+
+}
+
+
+/* =========================
+   RESUMEN
+========================= */
+
+.section-title{
+
+    margin:35px 0 15px;
+
+    font-size:18px;
+
+}
+
+
+.metrics{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:15px;
+
+}
+
+
+.metric{
+
+    background:#070f1c;
+
+    border:1px solid #172033;
+
+    border-radius:15px;
+
+    padding:20px;
+
+}
+
+
+.metric-icon{
+
+    font-size:28px;
+
+}
+
+
+.metric-title{
+
+    color:#94a3b8;
+
+    font-size:12px;
+
+    margin-top:10px;
+
+}
+
+
+.metric-value{
+
+    font-size:25px;
+
+    margin-top:5px;
+
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .sidebar{
+
+        position:relative;
+
+        width:100%;
+
+        height:auto;
+
+    }
+
+    .update{
+
+        display:none;
+
+    }
+
+    .main{
+
+        margin-left:0;
+
+        padding:25px;
+
+    }
+
+    .dashboard-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .metrics{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:500px){
+
+    .welcome h1{
+
+        font-size:28px;
+
+    }
+
+    .metrics{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     MENU
+========================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">📊</div>
+
+        <div>
+
+            <h2>PANEL DE CONTROL</h2>
+
+            <span>Tienda & Farmacia</span>
+
+        </div>
+
+    </div>
+
+
+    <nav class="menu">
+
+        <a href="#" class="active">
+            🏠 &nbsp; Inicio
+        </a>
+
+        <a href="#">
+            🛒 &nbsp; Tienda
+        </a>
+
+        <a href="#">
+            💊 &nbsp; Farmacia
+        </a>
+
+        <a href="#">
+            📈 &nbsp; Resumen General
+        </a>
+
+        <a href="#">
+            📄 &nbsp; Reportes
+        </a>
+
+        <a href="#">
+            🔔 &nbsp; Alertas
+        </a>
+
+        <a href="#">
+            👥 &nbsp; Usuarios
+        </a>
+
+        <a href="#">
+            ⚙️ &nbsp; Configuración
+        </a>
+
+    </nav>
+
+
+    <div class="update">
+
+        <small>
+            🕒 Última actualización
+        </small>
+
+        <strong>
+            Sistema conectado
+        </strong>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================
+     CONTENIDO
+========================= -->
+
+<main class="main">
+
+
+    <div class="top">
+
+        <div class="welcome">
+
+            <small>BIENVENIDO</small>
+
+            <h1>
+                Panel de Estadísticas 👋
+            </h1>
+
+            <p>
+                Monitorea y analiza el desempeño de tu negocio.
+            </p>
+
+        </div>
+
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            Sistemas en línea
+
+        </div>
+
+    </div>
+
+
+
+    <!-- TARJETAS TIENDA / FARMACIA -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- TIENDA -->
+
+        <article class="business-card tienda">
+
+            <div class="card-content">
+
+                <div class="card-icon">
+                    🛒
+                </div>
+
+                <div class="card-label">
+                    ESTADÍSTICAS DE
+                </div>
+
+                <div class="card-title">
+                    TIENDA
+                </div>
+
+                <p class="card-description">
+
+                    Ventas, productos, inventario
+                    y análisis detallado de tu tienda.
+
+                </p>
+
+                <a href="#" class="button button-blue">
+
+                    Ver estadísticas →
+                    
+                </a>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- FARMACIA -->
+
+        <article class="business-card farmacia">
+
+            <div class="card-content">
+
+                <div class="card-icon">
+                    💊
+                </div>
+
+                <div class="card-label">
+                    ESTADÍSTICAS DE
+                </div>
+
+                <div class="card-title">
+                    FARMACIA
+                </div>
+
+                <p class="card-description">
+
+                    Ventas, inventario, ajustes,
+                    caducidades y control de farmacia.
+
+                </p>
+
+                <a href="#" class="button button-green">
+
+                    Ver estadísticas →
+
+                </a>
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- RESUMEN -->
+
+    <h2 class="section-title">
+
+        📊 RESUMEN GENERAL
+
+    </h2>
+
+
+    <section class="metrics">
+
+
+        <div class="metric">
+
+            <div class="metric-icon">
+                💰
+            </div>
+
+            <div class="metric-title">
+                VENTAS
+            </div>
+
+            <div class="metric-value">
+                Power BI
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-icon">
+                🛍️
+            </div>
+
+            <div class="metric-title">
+                TRANSACCIONES
+            </div>
+
+            <div class="metric-value">
+                Automático
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-icon">
+                📦
+            </div>
+
+            <div class="metric-title">
+                INVENTARIO
+            </div>
+
+            <div class="metric-value">
+                Actualizado
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-icon">
+                👥
+            </div>
+
+            <div class="metric-title">
+                USUARIOS
+            </div>
+
+            <div class="metric-value">
+                En línea
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+</body>
+
+</html>
